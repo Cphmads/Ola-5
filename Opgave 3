@@ -41,7 +41,14 @@ ggplot(Muligheder_df, aes(x = reorder(Svar, -Antal), y = Antal, fill = Svar)) +
 Muligheder_df1 <- Muligheder_df %>%
   mutate(Procent = Antal / sum(Antal) * 100)
 
-ggplot(Muligheder_df1, aes(x = reorder(Svar, -Procent), y = Procent, fill = Svar)) +
+# Definer rækkefølgen for Svar
+Muligheder_df1$Svar <- factor(
+  Muligheder_df1$Svar,
+  levels = c("Meget dårlige", "Dårlige", "Neutrale", "Gode", "Meget gode")
+)
+
+# Lav plottet
+ggplot(Muligheder_df1, aes(x = Svar, y = Procent, fill = Svar)) +
   geom_bar(stat = "identity") +
   geom_text(aes(label = sprintf("%.1f%%", Procent)), vjust = -0.5, size = 3) + # Procenter som labels
   labs(
